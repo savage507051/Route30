@@ -1,4 +1,6 @@
 # Route30
 Route30 is a client-side JavaScript routing library.
 
-This library was initially developed as a capstone project in the MGIS program at Penn State.
+This library is developed as a capstone project in the MGIS program at Penn State.
+
+The purpose of this library is to allow web app developers to incorporate routing in their application.
