@@ -1,4 +1,7 @@
 # Route30
+Author: George Adams
+Creation Date: October 6, 2021
+
 Route30 is a client-side JavaScript routing library.
 
 This library is developed as a capstone project in the MGIS program at Penn State.
