@@ -1,0 +1,403 @@
+/*
+Copyright 2021 Southwest Research Institute (SwRI)
+
+Author: George Adams
+Principal Engineer, SwRI
+6220 Culebra Road
+San Antonio, Texas 78238-5166
+gadams@swri.org, (210) 522-4957
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnised to do so, subject to the
+following conditions.
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+body {
+    padding: 0em;
+    margin: 0em;
+}
+html, body {
+    height: 100vh;
+    width: 100vw;
+}
+
+
+.Subheader {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.ItemHeader {
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+#mapid {
+    margin-top: 0%;
+    width: 100vw;
+    height: 70vh;
+    border: 1px solid #ccc;
+  }
+
+
+
+#filterPOIsRow {
+  background-color: coral;
+}
+
+#StructuresRow {
+  background-color: #F0C152;
+}
+
+#EraRow {
+  background-color: #F0A852;
+}
+
+#rangeTourLength {
+    margin-left: 10%;
+}
+
+
+#bg_image {
+    width: 100vw;
+    height: 20vh;
+    overflow-x: auto;
+}
+
+.btn-image .image {
+  height: 15vh;
+}
+
+#control_buttons {
+    margin-top: 1%;
+    float: left;
+}
+
+
+/* The popup form - hidden by default */
+.form-popup {
+    display: none;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    border: 3px solid #f1f1f1;  
+    overflow: auto;
+}
+
+#frmStatus {
+  position: fixed;
+  top: 1%;
+  right: 1%;
+  opacity: 0.65;
+  width: 25em;
+  max-width: 50vw;
+  max-height: 45vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: #e0ebeb;
+}
+
+#btnCopyright {
+  float: right;
+  margin: 0em;
+  padding: 0em;
+  font-size: .8em;
+  /*background-color: #d1e0e0;*/
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: black;
+}
+
+
+
+#containerMain {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+}
+
+
+
+#taStatus {
+  font-size: 1em;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#frmBuildATour {
+  max-width: 100vw;
+  max-height: 65vh;
+  width: 45em;
+}
+
+
+#frmStartPosition {
+  max-width: 100vw;
+  max-height: 35vh;
+  width: 35em;
+}
+
+#frmLicense {
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 50em;
+}
+
+#taLicense {
+  font-size: 1em;
+}
+  
+/* Add styles to the form container */
+/*
+.form-container {
+    background-color: white;
+}
+*/
+
+#Home, #Tour, #Start, #Track {
+  opacity: 0.75;
+}
+
+#Home:hover, #Tour:hover, #Start:hover, #Track:hover {
+  opacity: 1;
+}
+  
+  
+/* Add some hover effects */
+.form-container .btn:hover {
+    opacity: 1;
+}
+
+.btn {
+    margin: 4%;
+}
+
+
+.btn:active {
+  transform: scale(0.90);
+}
+
+/*
+.btn.btn-info:active {
+  background: olive;
+}
+*/
+
+#btnUseCurrentPosition, #btnSetStartingPosition {
+  background-color: #7898B0;
+  color: white;
+}
+
+
+
+
+.leaflet-tooltip.poi-labels {
+    background-color: transparent;
+    border: transparent;
+    box-shadow: none;
+    font-weight: bold;
+    font-size: 1em;
+    color: white;
+}
+
+/* Reference: https://www.w3schools.com/howto/howto_css_switch.asp */
+/* The switch - the box around the slider */
+/*
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+  }
+*/
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 2.5em;
+    height: 1.5em;
+  }
+
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  /*
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  */
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 1em;
+    width: 1em;
+    left: .2em;
+    bottom: .2em;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  /*
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  */
+
+  input:focus + .slider {
+    box-shadow: 0 0 .2em #2196F3;
+  }
+
+
+ /* 
+  input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+  */
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(1em);
+    -ms-transform: translateX(1em);
+    transform: translateX(1em);
+  }
+  
+  /* Rounded sliders */
+  /*
+  .slider.round {
+    border-radius: 17px;
+  }
+  */
+
+  .slider.round {
+    border-radius: 1.5em;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+.btn-group.controls {
+  float: right;
+}
+
+.leaflet-container.crosshair-cursor-enabled {
+  cursor:crosshair;
+}
+
+/* Reference: https://stackoverflow.com/questions/42565497/placing-leaflet-controls-side-by-side-instead-of-vertically-stacked-in-r-shiny-w  */
+
+.leaflet-control-zoom.leaflet-bar.leaflet-control > a {
+  float: left;
+}
+
+
+
+.leaflet-control-zoom-in {
+  margin-right: .2em;
+}
+
+
+.sliderRange {
+  width: 12em;
+}
+
+#outputRange {
+  width: 4em;
+}
+
+
+#loaderRoute {
+  position: fixed;
+  top: 1%;
+  right: 50%;
+  opacity: 0.65;
+  display: none;
+}
+
+/* Reference:   https://www.w3schools.com/howto/howto_css_loader.asp*/
+.loader {
+  border: 1em solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 1em solid blue;
+  border-right: 1em solid green;
+  border-bottom: 1em solid red;
+  width: 4em;
+  height: 4em;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.tour-result {
+  cursor: pointer;
+}
+
+.tour-result:hover,
+.tour-result:focus {
+  color: orange;
+}  
+
+ul {
+  list-style: none;
+}
+
+
+
+
