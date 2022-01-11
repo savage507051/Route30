@@ -205,11 +205,6 @@ html, body {
     color: white;
 }
 
-/* Reference: W3Schools. (2022). How To - Toggle Switch. 
-  Accessed January 11, 2022 from https://www.w3schools.com/howto/howto_css_switch.asp. */
-
-  /* The switch - the box around the slider */
-
 .switch {
     position: relative;
     display: inline-block;
@@ -217,15 +212,12 @@ html, body {
     height: 1.5em;
   }
 
-  
-  /* Hide default HTML checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
   }
 
-  /* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -266,7 +258,6 @@ input:checked + .slider:before {
     transform: translateX(1em);
   }
   
-  /* Rounded sliders */
 
 .slider.round {
     border-radius: 1.5em;
@@ -311,8 +302,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* Reference:   W3Schools. (2022). How To - CSS Loader. 
-Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.asp. */
+
 .loader {
   border: 1em solid #f3f3f3;
   border-radius: 50%;
