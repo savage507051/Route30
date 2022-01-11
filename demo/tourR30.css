@@ -210,7 +210,7 @@ html, body {
 
   /* The switch - the box around the slider */
 
-  .switch {
+.switch {
     position: relative;
     display: inline-block;
     width: 2.5em;
@@ -219,7 +219,7 @@ html, body {
 
   
   /* Hide default HTML checkbox */
-  .switch input {
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -238,7 +238,7 @@ html, body {
     transition: .4s;
   }
 
-  .slider:before {
+.slider:before {
     position: absolute;
     content: "";
     height: 1em;
@@ -250,17 +250,17 @@ html, body {
     transition: .4s;
   }
   
-  input:checked + .slider {
+input:checked + .slider {
     background-color: #2196F3;
   }
   
 
-  input:focus + .slider {
+input:focus + .slider {
     box-shadow: 0 0 .2em #2196F3;
   }
 
 
-  input:checked + .slider:before {
+input:checked + .slider:before {
     -webkit-transform: translateX(1em);
     -ms-transform: translateX(1em);
     transform: translateX(1em);
@@ -268,13 +268,14 @@ html, body {
   
   /* Rounded sliders */
 
-  .slider.round {
+.slider.round {
     border-radius: 1.5em;
   }
   
-  .slider.round:before {
+.slider.round:before {
     border-radius: 50%;
   }
+
 
 .btn-group.controls {
   float: right;
@@ -311,7 +312,7 @@ html, body {
 }
 
 /* Reference:   W3Schools. (2022). How To - CSS Loader. 
-Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.asp.*/
+Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.asp. */
 .loader {
   border: 1em solid #f3f3f3;
   border-radius: 50%;
@@ -347,7 +348,3 @@ Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.
 ul {
   list-style: none;
 }
-
-
-
-
