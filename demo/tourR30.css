@@ -25,6 +25,12 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/*
+References:
+  W3Schools. (2022). How To - Toggle Switch. Accessed January 11, 2022 from https://www.w3schools.com/howto/howto_css_switch.asp.
+  W3Schools. (2022). How To - CSS Loader. Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.asp.
+*/
+
 body {
     padding: 0em;
     margin: 0em;
@@ -115,7 +121,6 @@ html, body {
   margin: 0em;
   padding: 0em;
   font-size: .8em;
-  /*background-color: #d1e0e0;*/
   background-color: transparent;
   outline: none;
   border: none;
@@ -161,12 +166,6 @@ html, body {
   font-size: 1em;
 }
   
-/* Add styles to the form container */
-/*
-.form-container {
-    background-color: white;
-}
-*/
 
 #Home, #Tour, #Start, #Track {
   opacity: 0.75;
@@ -177,7 +176,6 @@ html, body {
 }
   
   
-/* Add some hover effects */
 .form-container .btn:hover {
     opacity: 1;
 }
@@ -191,18 +189,11 @@ html, body {
   transform: scale(0.90);
 }
 
-/*
-.btn.btn-info:active {
-  background: olive;
-}
-*/
 
 #btnUseCurrentPosition, #btnSetStartingPosition {
   background-color: #7898B0;
   color: white;
 }
-
-
 
 
 .leaflet-tooltip.poi-labels {
@@ -214,16 +205,10 @@ html, body {
     color: white;
 }
 
-/* Reference: https://www.w3schools.com/howto/howto_css_switch.asp */
-/* The switch - the box around the slider */
-/*
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 30px;
-    height: 17px;
-  }
-*/
+/* Reference: W3Schools. (2022). How To - Toggle Switch. 
+  Accessed January 11, 2022 from https://www.w3schools.com/howto/howto_css_switch.asp. */
+
+  /* The switch - the box around the slider */
 
   .switch {
     position: relative;
@@ -252,20 +237,6 @@ html, body {
     -webkit-transition: .4s;
     transition: .4s;
   }
-  
-  /*
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 13px;
-    width: 13px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  */
 
   .slider:before {
     position: absolute;
@@ -283,24 +254,11 @@ html, body {
     background-color: #2196F3;
   }
   
-  /*
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  */
 
   input:focus + .slider {
     box-shadow: 0 0 .2em #2196F3;
   }
 
-
- /* 
-  input:checked + .slider:before {
-    -webkit-transform: translateX(13px);
-    -ms-transform: translateX(13px);
-    transform: translateX(13px);
-  }
-  */
 
   input:checked + .slider:before {
     -webkit-transform: translateX(1em);
@@ -309,11 +267,6 @@ html, body {
   }
   
   /* Rounded sliders */
-  /*
-  .slider.round {
-    border-radius: 17px;
-  }
-  */
 
   .slider.round {
     border-radius: 1.5em;
@@ -331,13 +284,9 @@ html, body {
   cursor:crosshair;
 }
 
-/* Reference: https://stackoverflow.com/questions/42565497/placing-leaflet-controls-side-by-side-instead-of-vertically-stacked-in-r-shiny-w  */
-
 .leaflet-control-zoom.leaflet-bar.leaflet-control > a {
   float: left;
 }
-
-
 
 .leaflet-control-zoom-in {
   margin-right: .2em;
@@ -361,7 +310,8 @@ html, body {
   display: none;
 }
 
-/* Reference:   https://www.w3schools.com/howto/howto_css_loader.asp*/
+/* Reference:   W3Schools. (2022). How To - CSS Loader. 
+Accessed january 11, 2022 from https://www.w3schools.com/howto/howto_css_loader.asp.*/
 .loader {
   border: 1em solid #f3f3f3;
   border-radius: 50%;
