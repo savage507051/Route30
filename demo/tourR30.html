@@ -1,0 +1,1124 @@
+<!--
+Copyright 2021 Southwest Research Institute (SwRI)
+
+Author: George Adams
+Principal Engineer, SwRI
+6220 Culebra Road
+San Antonio, Texas 78238-5166
+gadams@swri.org, (210) 522-4957
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnised to do so, subject to the
+following conditions.
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!--
+Record of Changes:
+    January 12, 2022: Baseline
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Route 30 Demo Tour App</title>
+
+    <link rel="stylesheet" href="tourR30.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src = "route30.js"></script>
+
+    <script src="poi.js"></script>
+
+    <script type="text/javascript">
+
+        var map;
+ 
+        var starting_lat = 29.35419619826121;
+        var starting_long = -98.88199453758756;
+        var starting_zoom = 15;
+
+        var marker;
+        var bSelectStartingLocation = false;
+        var bTracking = false;
+
+        var poiValue = {};
+
+        var iconUser = L.icon({
+            iconUrl: "user.png",
+            iconSize: [20, 45],
+            iconAnchor: [10, 45],
+
+        });
+
+        var poiStyle = {
+				radius: 12,
+				fillColor: "#637d61",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.8
+			};
+
+        var poiSelectedStyle = {
+				radius: 12,
+				fillColor: "#0000ff",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.8
+			};   
+            
+        var poiFilteredStyle = {
+            radius: 12,
+				fillColor: "#D0CFCF",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.8
+			};               
+
+		var tourStyle = {
+			"color": "#ff7800",
+			"weight": 5,
+			"opacity": 0.65
+		};
+
+        var routeParameter = {
+            maxDistance: -1, // A value less than zero means there is no maximum route distance
+            userStart: [-98.87934, 29.35596], // Initialize to St. Louis Church
+            poiFilter: [["house", "church", "commercial"], ["1800s", "1900s"]],
+            edgeFilter: [["acc_yes", "acc_no"]],
+            algorithm: [5.0, 0.9, 200, 500, 150],  //Simulated Annealing Parameters: 
+                                                        //Initial Temperature,
+                                                        //Temperature Factor,
+                                                        //Number of Temperature Steps,
+                                                        //Maximum attempts at each temperature,
+                                                        //Breakout successes (Break out early
+                                                        //at each temperature after this number
+                                                        //of successes))
+
+
+        };
+		
+        R30LoadData("poi.geojson", "nodes.geojson", "edges.geojson");
+		
+		var tour_layer = null;
+
+        var tourNode = null;
+
+        var tourActive = [];
+
+        function resetBuildScreen() {
+            let sw_accessible = document.getElementById("swAccessible");
+            sw_accessible.checked = false;
+
+            let cb_range_tour_length = document.getElementById("cbTourLength");
+            let range_tour_length = document.getElementById('rangeTourLength');
+            let output_range_tour_length = document.getElementById("outputRange");
+            range_tour_length.value = "20";
+            range_tour_length.disabled = true;
+            cb_range_tour_length.checked = false;
+            output_range_tour_length.value = "2 km";
+
+            let sw_house = document.getElementById("swHouse");
+            sw_house.checked = true;
+
+            let sw_church = document.getElementById("swChurch");
+            sw_church.checked = true;
+
+            let sw_commercial = document.getElementById("swCommercial");
+            sw_commercial.checked = true;
+
+            let sw_1800s = document.getElementById("sw1800s");
+            sw_1800s.checked = true;
+
+            let sw_1900s = document.getElementById("sw1900s");
+            sw_1900s.checked = true;
+
+        }
+
+        function processSwitches() {
+            if(map.hasLayer(tour_layer)) {
+			    map.removeLayer(tour_layer);
+		    }
+
+            tourActive = [];
+            updateFilters();
+
+        }
+
+        function clearTourRoute() {
+            if(map.hasLayer(tour_layer)) {
+			    map.removeLayer(tour_layer);
+		    }
+
+            tourActive = [];
+
+            resetBuildScreen();
+            updateFilters();
+
+            let clear_button = document.getElementById("Clear");
+            clear_button.blur();
+
+            let status_title = document.getElementById("lblStatus");
+            status_title.innerHTML = "<b>Status</b>";
+            status_title.style.display = "none";
+            let status_area = document.getElementById("taStatus");
+            status_area.innerHTML = "";
+            status_area.style.display = "none";
+
+
+            let tour_title = document.getElementById("lblTour");
+            tour_title.innerHTML = "";
+            document.getElementById("list_tour").style.maxHeight = "0vh";
+
+            tourNode.innerHTML = "";
+
+        }
+
+        function setupRouteParameter() {
+
+            let range_tour_length = document.getElementById('rangeTourLength');
+            if(range_tour_length.disabled == false) {
+                routeParameter.maxDistance = range_tour_length.value / 10;
+            } else {
+                routeParameter.maxDistance = -1; // No maximum route distance
+            }
+
+            // Determine what filters are in place
+            routeParameter.poiFilter = [];
+            let house_filter = document.getElementById("swHouse");
+            let church_filter = document.getElementById("swChurch");
+            let commercial_filter = document.getElementById("swCommercial");
+            
+
+            let era_1800s_filter = document.getElementById("sw1800s");
+            let era_1900s_filter = document.getElementById("sw1900s");
+            
+            let structure_filter = []
+            if(house_filter.checked) {
+                structure_filter.push("house");
+            }
+            if(church_filter.checked) {
+                structure_filter.push("church");
+            }
+            if(commercial_filter.checked) {
+                structure_filter.push("commercial");
+            }
+
+            let era_filter = [];
+            if(era_1800s_filter.checked) {
+                era_filter.push("1800s");
+            }
+            if(era_1900s_filter.checked) {
+                era_filter.push("1900s");
+            }
+
+            routeParameter.poiFilter.push(structure_filter);
+            routeParameter.poiFilter.push(era_filter);
+
+            routeParameter.edgeFilter = [];
+            let accessible_filter = document.getElementById("swAccessible");
+            let edge_filter = [];
+            if(accessible_filter.checked) {
+                edge_filter.push("acc_yes");
+            } else {
+                edge_filter.push("acc_yes");
+                edge_filter.push("acc_no");
+            }
+            routeParameter.edgeFilter.push(edge_filter);
+        }
+		
+		function buildTourRoute() {
+
+            if(map.hasLayer(tour_layer)) {
+			    map.removeLayer(tour_layer);
+		    }
+
+            let tour_promise = new Promise(function(tourResolve, tourError){
+
+                let tour = R30Generate(routeParameter);
+
+                if(tour != null) {
+                    tourResolve(tour);
+                } else {
+                    tourError(tour)
+                }
+
+            });
+
+            tour_promise.then(
+                function(tour) {
+                    document.getElementById("waitingForRoute").style.display = "none";
+                    tour_layer = L.geoJSON(tour, {
+			            style: tourStyle
+		            });
+		            tour_layer.addTo(map);
+
+                    tourActive = tour.properties.path;
+                    updatePOIStyle();
+
+                    let status_title = document.getElementById("lblStatus");
+                    status_title.innerHTML = "<b>Generated Route</b>";
+                    status_title.style.dispay = "block";
+
+                    let tour_title = document.getElementById("lblTour");
+                    tour_title.innerHTML = "<b>Recommended Tour:</b>";
+                    
+                    document.getElementById("list_tour").style.maxHeight = "25vh";
+
+
+                    let status_area = document.getElementById("taStatus");
+                    status_area.style.display = "block";
+ 
+                    status_area.innerHTML = "Distance: " + 
+                                        parseFloat(tour.properties.distance).toFixed(1) +
+                                         " km (click to toggle tour)";
+
+                    
+                    let fragment = document.createDocumentFragment();
+
+                    for(let index_path = 0; index_path < tour.properties.path.length; index_path++) {
+                        let li = document.createElement("li");
+                        li.classList.add("tour-result");
+                        li.setAttribute("data_result_id", tour.properties.path[index_path]);
+                        li.textContent = tour.properties.path[index_path] + ": " + poiValue[tour.properties.path[index_path]].feature.properties.name;
+                        fragment.appendChild(li);
+                    }
+                    tourNode.innerHTML = "";
+                    tourNode.appendChild(fragment);
+
+                },
+                function(tour) {
+                    document.getElementById("waitingForRoute").style.display = "none";
+
+                    tourActive = [];
+
+                    let status_title = document.getElementById("lblStatus");
+                    status_title.innerHTML = "<b>Status</b>";
+                    status_title.style.display = "block";
+
+
+                    let tour_title = document.getElementById("lblTour");
+                    tour_title.innerHTML = "";
+                    document.getElementById("list_tour").style.maxHeight = "0vh";
+
+                    let status_area = document.getElementById("taStatus");
+                    status_area.style.display = "block";
+                    status_area.innerHTML = "Error generating route";
+                    
+                }
+            );
+
+		}        
+
+        function goHome() {
+            map.setView(new L.LatLng(starting_lat, starting_long), starting_zoom);   
+            let home_button = document.getElementById("Home");
+            home_button.blur();
+        }
+
+        function btnHighlight(objButton) {
+
+            // Reset any other selections
+            for(poi_id in poiValue) {
+                if(poiFiltered(poiValue[poi_id])) {
+                    poiValue[poi_id].setStyle(poiFilteredStyle);
+                } else {
+                    poiValue[poi_id].setStyle(poiStyle);
+                }
+            }
+    
+            poiValue[objButton.value].setStyle(poiSelectedStyle);
+            
+            poiValue[objButton.value].openPopup();
+        }   
+
+        function poisOnEach(feature, layer) {
+            poiValue[feature.id] = layer;
+
+            layer.bindPopup("<b>" +feature.properties.popup + "</b>" + "<br>" +
+                feature.properties.Address);
+
+            layer.on({
+                click: function(e) {
+                    let btn_image = document.getElementById("btnImage_" + e.target.feature.id);
+                    btn_image.click();
+                    btn_image.focus();
+                }
+            });
+            
+        }
+
+        
+        window.addEventListener("orientationchange", function() {                   
+            if (window.orientation == 0) { //portrait
+                document.getElementById("frmBuildATour").style.maxWidth = "100vw";
+                document.getElementById("frmBuildATour").style.maxHeight = "65vh";
+                document.getElementById("frmStartPosition").style.maxWidth = "100vw";
+                document.getElementById("frmStartPosition").style.maxHeight = "35vh";
+                document.getElementById("frmStatus").style.maxHeight = "45vh";
+             
+            } else {
+                document.getElementById("frmBuildATour").style.maxWidth = "50vw";
+                document.getElementById("frmBuildATour").style.maxHeight = "100vh";
+                document.getElementById("frmStartPosition").style.maxWidth = "50vw";
+                document.getElementById("frmStartPosition").style.maxHeight = "100vh";
+                document.getElementById("frmStatus").style.maxHeight = "100vh";
+            }
+        }, false);
+        
+
+        function onLocationFound(e) {
+            if(marker) {
+                map.removeLayer(marker);
+            }
+            
+            routeParameter.userStart[0] = e.latlng.lng;
+            routeParameter.userStart[1] = e.latlng.lat;
+            marker = L.marker(e.latlng, {icon: iconUser}).addTo(map);
+            
+        }
+
+        function onLocationError(e) {
+            alert(e.message);
+        }
+
+
+
+        function init() {
+
+            // set up the map
+			map = new L.Map('mapid', {
+                zoomControl: false
+            });       
+
+
+            let tour_title = document.getElementById("lblTour");
+            tour_title.innerHTML = "";
+
+            tourNode = document.getElementById("list_tour");
+            tourNode.addEventListener("click", onTourListClickHandler);
+
+            tourNode.innerHTML = "";
+
+
+            let status_title = document.getElementById("lblStatus");
+            status_title.innerHTML = "<b>Status</b>";
+            status_title.style.display = "none";
+
+            let status_area = document.getElementById("taStatus");
+            status_area.addEventListener("click", toggleTourHandler);
+            status_area.innerHTML = "";
+            status_area.style.display = "none";
+
+
+            //Event listeners for buttons
+            let set_starting_position = document.getElementById("btnSetStartingPosition");
+            set_starting_position.addEventListener("click", getLocation);
+            let use_current_position = document.getElementById("btnUseCurrentPosition");
+            use_current_position.addEventListener("click", setCurrentLocation);
+
+
+            // create the tile layer with correct attribution
+            let osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            let osmAttrib='Map datacontainer © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+            let osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 20, attribution: osmAttrib});		
+            map.addLayer(osm);	
+
+            // set the map to Castroville
+            goHome();
+
+            var zoom = L.control.zoom({
+                position: 'topleft'
+            }).addTo(map);
+
+            buttons_div = document.getElementById("control_buttons");
+            zoom_container = zoom.getContainer();
+            zoom_container.style.border = "none";
+            
+            
+            document.getElementsByClassName("leaflet-control-zoom-in")[0].style.fontSize = "5em";
+            document.getElementsByClassName("leaflet-control-zoom-in")[0].style.width = "1em";
+            document.getElementsByClassName("leaflet-control-zoom-in")[0].style.textAlign = "center";
+            document.getElementsByClassName("leaflet-control-zoom-in")[0].style.backgroundColor = "transparent";
+            document.getElementsByClassName("leaflet-control-zoom-in")[0].style.border = "none";
+            document.getElementsByClassName("leaflet-control-zoom-out")[0].style.fontSize = "5em";
+            document.getElementsByClassName("leaflet-control-zoom-out")[0].style.width = "1em";
+            document.getElementsByClassName("leaflet-control-zoom-out")[0].style.textAlign = "center";
+            document.getElementsByClassName("leaflet-control-zoom-out")[0].style.backgroundColor = "transparent";
+            document.getElementsByClassName("leaflet-control-zoom-out")[0].style.border = "none";
+            
+            
+            buttons_div.insertBefore(zoom.getContainer(), buttons_div.firstChild)
+
+            var poiLayer = L.geoJSON(null, {
+				pointToLayer: function (feature, latlng) {
+                    
+                    label = String(feature.id);
+				    return new L.CircleMarker(latlng, poiStyle).bindTooltip(label, {
+                        permanent: true,
+                        direction: "center",
+                        className: "poi-labels"
+                    }).openTooltip();
+                    
+				},
+                onEachFeature: poisOnEach
+			});	
+            poiLayer.addData(pois);
+            poiLayer.addTo(map);
+
+            
+            map.on('locationerror', onLocationError);
+
+            map.on('locationfound', onLocationFound);
+
+
+            map.addEventListener('click', function(e) {
+                // Reset any selections if user clicks map
+                
+                for(poi_id in poiValue) {
+                
+                    if(poiFiltered(poiValue[poi_id])) {
+                        poiValue[poi_id].setStyle(poiFilteredStyle);
+                    } else {
+                        poiValue[poi_id].setStyle(poiStyle);
+                    }
+
+                }
+                
+
+                if(bSelectStartingLocation) {
+                    if(marker) {
+                        map.removeLayer(marker);
+                    }
+                    routeParameter.userStart[0] = e.latlng.lng;
+                    routeParameter.userStart[1] = e.latlng.lat;
+                    marker = L.marker(e.latlng, {icon: iconUser}).addTo(map);
+                }   
+
+            });      
+
+            
+            
+            if (window.orientation == 0) { //portrait
+                document.getElementById("frmBuildATour").style.maxWidth = "100vw";
+                document.getElementById("frmBuildATour").style.maxHeight = "65vh";
+                document.getElementById("frmStartPosition").style.maxWidth = "100vw";
+                document.getElementById("frmStartPosition").style.maxHeight = "35vh";
+                document.getElementById("frmStatus").style.maxHeight = "45vh";
+                
+            } else {
+                document.getElementById("frmBuildATour").style.maxWidth = "50vw";
+                document.getElementById("frmBuildATour").style.maxHeight = "100vh";
+                document.getElementById("frmStartPosition").style.maxWidth = "50vw";
+                document.getElementById("frmStartPosition").style.maxHeight = "100vh";
+                document.getElementById("frmStatus").style.maxHeight = "100vh";
+            }
+            
+
+            let btn_generate_tour = document.getElementById("Generate Tour");
+            btn_generate_tour.addEventListener("click", generateTour);
+
+            marker = L.marker([routeParameter.userStart[1],routeParameter.userStart[0]], {icon: iconUser}).addTo(map);
+
+            let ta_license = document.getElementById("taLicense");
+            ta_license.value = 'Copyright © 2021 Southwest Research Institute (SwRI)\n\n' +
+                'Author: George Adams\n' +
+                'Principal Engineer, SwRI\n' +
+                '6220 Culebra Road\n' +
+                'San Antonio, Texas 78238-5166\n' +
+                'gadams@swri.org, (210) 522-4957\n\n' +
+                'Permission is hereby granted, free of charge, to any person' +
+                ' obtaining a copy of this software and associated documentation' +
+                ' files (the “Software”), to deal in the Software without restriction,' +
+                ' including without limitation the rights to use, copy, modify,' +
+                ' merge, publish, distribute, sublicense, and/or sell copies of the' +
+                ' Software, and to permit persons to whom the Software is furnished' +
+                ' to do so, subject to the following conditions:\n\n' +
+
+                'The above copyright notice and this permission notice shall be' +
+                ' included in all copies or substantial portions of the Software.\n\n' +
+
+                'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,' +
+                ' EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES' +
+                ' OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.' +
+                ' IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,' +
+                ' DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR' +
+                ' OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE' +
+                ' USE OR OTHER DEALINGS IN THE SOFTWARE';
+
+                this.openFormLicense();
+
+        }
+
+        function openForm() {
+            map.dragging.disable();
+            document.getElementById("frmBuildATour").style.display = "block";
+        }
+
+        function updateFilters() {
+            setupRouteParameter();
+            updatePOIStyle();
+        }
+
+        function closeForm() {
+
+            updateFilters();
+            document.getElementById("frmBuildATour").style.display = "none";
+            map.dragging.enable();
+        }      
+
+        function openFormStartPosition() {
+            document.getElementById("frmStartPosition").style.display = "block";
+        }
+
+        function closeFormStartPosition() {
+            bSelectStartingLocation = false;
+            L.DomUtil.removeClass(map._container,'crosshair-cursor-enabled');
+            document.getElementById("frmStartPosition").style.display = "none";
+            set_starting_position = document.getElementById("btnSetStartingPosition");
+            set_starting_position.style.backgroundColor = "#7898B0";
+        }   
+        
+        function openFormLicense() {
+            document.getElementById("frmLicense").style.display = "block";
+        }
+
+        function closeFormLicense() {
+            document.getElementById("frmLicense").style.display = "none";
+        }           
+        
+        
+        function poiFiltered(poi) {
+           
+            let criteria = poi.feature.properties.criteria;
+            let filters = routeParameter.poiFilter;
+
+            let filtered_out = false;
+            for(let ifilter = 0; ifilter < filters.length; ifilter++) {
+                if(!filters[ifilter].includes(criteria[ifilter])) {
+                    filtered_out = true;
+                }
+            }            
+   
+            if(tourActive.length > 0) {
+                if(!tourActive.includes(poi.feature.id)) {
+                    filtered_out = true;
+                }
+            }
+
+            return filtered_out;
+        }
+
+        function updatePOIStyle() {
+            // Reset any other selections
+            for(poi_id in poiValue) {
+
+                if(poiFiltered(poiValue[poi_id])) {
+                    poiValue[poi_id].setStyle(poiFilteredStyle);
+                } else {
+                    poiValue[poi_id].setStyle(poiStyle);
+                }
+
+            }
+        }
+
+
+        function generateTour() {
+          
+            updateFilters();
+ 
+            document.getElementById("frmBuildATour").style.display = "none";
+            map.dragging.enable();
+            document.getElementById("waitingForRoute").style.display = "block";
+
+            
+            let status_title = document.getElementById("lblStatus");
+            status_title.innerHTML = "<b>Status</b>";
+            status_title.style.display = "block";
+        
+            let status_area = document.getElementById("taStatus");
+            status_area.innerHTML = "Please wait - Processing route...";
+            status_area.style.display = "block";
+
+            let tour_title = document.getElementById("lblTour");
+            tour_title.innerHTML = "";
+            document.getElementById("list_tour").style.maxHeight = "0vh";
+            
+            tourNode.innerHTML = "";
+
+            
+            setTimeout(function() {
+                buildTourRoute();
+            }, 100);
+           
+        }
+
+        function getLocation(event) {
+            L.DomEvent.stopPropagation(event);
+
+            set_starting_position = document.getElementById("btnSetStartingPosition");
+            set_starting_position.style.backgroundColor = "red";
+            bSelectStartingLocation = true;
+
+            L.DomUtil.addClass(map._container,'crosshair-cursor-enabled');
+
+            set_starting_position.blur();
+
+        }
+
+        function trackUser() {
+            let track = document.getElementById("Track");
+        
+            if(bTracking) {
+                map.stopLocate();
+                bTracking = false;
+                track.innerHTML = "Start Tracking";
+                track.style.backgroundColor = "#7898B0";
+                
+            } else {
+                map.locate({watch: true});
+                bTracking = true;
+                track.innerHTML = "Stop Tracking";
+                track.style.backgroundColor = "red";
+            }
+
+            track.blur();
+        }
+
+
+        function setCurrentLocation(event) {
+            L.DomEvent.stopPropagation(event);
+
+            map.locate();
+
+            closeFormStartPosition();
+        }
+
+        
+        function activateTourLength(cb) {
+
+            let range_tour_length = document.getElementById('rangeTourLength');
+            let output_range_tour_length = document.getElementById("outputRange");
+
+            if(cb.checked) {
+                range_tour_length.disabled = false;
+            } else {
+                range_tour_length.value = "20";
+                output_range_tour_length.value = "2 km";
+                range_tour_length.disabled = true;
+            }
+        }
+
+        function onTourListClickHandler(event) {   
+            let target = event.target;
+            let result_id = target.getAttribute("data_result_id");
+            
+
+            let btn_image = document.getElementById("btnImage_" + result_id);
+            
+            btn_image.click();
+            btn_image.focus();
+        
+            L.DomEvent.stopPropagation(event);
+            
+        }        
+        
+        function toggleTourHandler(event) {
+            
+            let tour_title = document.getElementById("lblTour");
+            if(tour_title.style.display == "none") {
+                tour_title.style.display = "block";
+                tourNode.style.display = "block";
+            } else {
+                tour_title.style.display = "none";
+                tourNode.style.display = "none";
+            }
+
+            L.DomEvent.stopPropagation(event);
+    
+        }
+
+    </script>    
+
+</head>
+
+<body onload = "init()">
+    
+    <div class="container" id="containerMain">
+        <div class="row" id="top_row">
+            <div class="col-12">
+                <div id="mapid">
+                    <div id="control_buttons" class="btn-group-vertical" style="z-index: 1001" role="group" aria-label="...">   
+                        <button id="Home" type="button" class="btn btn-primary mt-2" onclick="goHome()" style="background-color: #7898B0">Home</button>
+                        <button id="Tour" type="button" class="btn btn-primary" onclick="openForm()" style="background-color: #7898B0">Tour</button>
+                        <button id="Start" type="button" class="btn btn-primary" onclick="openFormStartPosition()" style="background-color: #7898B0">Set Start</button>
+                        <button id="Track" type="button" class="btn btn-primary" onclick="trackUser()" style="background-color: #7898B0">Start Tracking</button>
+                        
+                    </div>
+
+                    <div class="waitSymbol" id="waitingForRoute" style="z-index: 1002">
+
+                    </div>
+
+                    <form id="frmStatus" style="z-index: 1002">
+                        <div class="form-group">
+                            <div class="row m-0 p-0">
+                                <div class="col-12">
+                                    <button id="btnCopyright" type="button" class="btn btn-info" onclick="openFormLicense()">© 2021 Southwest Research Institute (SwRI)</button>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0">
+                                <div class="col-12">
+                                    <label id="lblStatus" style="display:none;"><b>Status</b></label>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0">
+                                <div class="col-12">
+                                    <label id="taStatus" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0">
+                                <div class="col-12">
+                                    <label id="lblTour" for="list_tour" style="display:block;"></label>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0">
+                                <div class="col-12">
+                                    <ul id="list_tour" style="margin:0em; padding:0em; overflow-y: auto;display:block;">
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                    <!-- Configure the License form-->
+                    <div class="form-popup" id="frmLicense" style="z-index: 1002">
+                        <form class="form-container">
+                            <div class="container m-0 p-0">
+                                <div class="row m-0 pt-0 ps-0 pe-0 pb-2 bg-secondary text-white">
+                                    <div class="col-12">
+                                        <h2 id="frmTitleLicense">Southwest Research Institute (SwRI) License</h2>
+                                        <div class="row m-0 p-2 bg-success text-white" id="rowStartSelectors">
+                                    
+                                            <div class="col-12">
+                                                <textarea class="form-control" id="taLicense" rows="10" readonly></textarea>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row m-0 pt-0 ps-0 pe-0 pb-2 bg-success text-white" id="rowStartControls">
+                                    
+                                            <div class="col-12">
+                                                <div class="btn-group controls">
+                                                    <button id="btnCloseLicense" type="button" class="btn btn-info" onclick="closeFormLicense()">Close</button>   
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Configure the Start Position form-->
+                    <div class="form-popup" id="frmStartPosition" style="z-index: 1002">
+                        <form class="form-container">
+                            <div class="container m-0 p-0">
+                                <div class="row m-0 pt-0 ps-0 pe-0 pb-2 bg-secondary text-white">
+                                    <div class="col-12">
+                                        <h1 id="frmTitleStartPosition">Set Starting Position</h1>
+                                        <div class="row m-0 p-0 bg-success text-white" id="rowStartSelectors">
+                                    
+                                            <div class="col-12">
+                                                <div class="btn-group">
+                                                    <button id="btnUseCurrentPosition" type="button" class="btn btn-info">Use Current Position</button>
+                                                    <button id="btnSetStartingPosition" type="button" class="btn btn-info">Set Starting Position</button> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row m-0 pt-0 ps-0 pe-0 pb-2 bg-success text-white" id="rowStartControls">
+                                    
+                                            <div class="col-12">
+                                                <div class="btn-group controls">
+                                                    <button id="btnCloseStartPosition" type="button" class="btn btn-info" onclick="closeFormStartPosition()">Close</button>   
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="form-popup" id="frmBuildATour" style="z-index: 1002">
+                        <form class="form-container" id="containerBuildTour">
+                            <div class="container m-0 p-0">
+                                <div class="row m-0 p-0 bg-secondary text-white">
+                                    <div class="col-12">
+                                        <h1 id="Title">Build a Tour</h1>
+                                        <div class="row m-0 p-2 bg-success text-white" id="tourRow">
+                                    
+                                            <div class="col-12">
+                                                <span class="label Subheader">Constrain Tour</span>
+                                            </div>
+                                        
+                                            <div class="row m-0 p-0">
+                                                <div class="col-4">
+                                                    <span class="label ItemHeader">Accessible</span>
+                                                </div>
+                                                <div class="col-8">
+                                                    <span class="label ItemHeader">Length:&nbsp;&nbsp</span>
+                                                    <output id="outputRange" name="outputRangeTourLength">2 km</output>
+                                                </div>
+                                            </div>
+                                    
+                                            <div class="row m-0 p-0">
+                                                <div class="col-4">
+                                                    <input type="checkbox" class="switch" id="swAccessible"></input>
+                                                </div>
+                                        
+                                                <div class="col-8" id="rangeElements">
+                                                    <input type="checkbox" class="switch" id="cbTourLength" name="cbTourLength" onchange="activateTourLength(this)"></input>                                                       
+                                                    <input type="range" id="rangeTourLength" min="10" max="50" value="20" class="sliderRange mt-0 ms-2 me-0 mb-0" disabled oninput="outputRangeTourLength.value = (this.value/10) + ' km'"> </input>                                      
+                                                </div>
+                                            </div> 
+
+                                        </div>
+
+                                        <!-- Filter POIs -->
+                                        <div class="row mt-2 ms-0 me-0 mb-0 p-2 text-white" id="filterPOIsRow">
+
+                                            <div class="col-12">
+                                                <span class="label Subheader">Filter Points of Interest</span>
+                                            </div>
+
+                                            <div class="row m-0 p-0" id="StructuresRow">
+
+                                                <div class="col-12">
+                                                    <span class="label Subheader">Structures</span>
+                                                </div>
+
+                                                <div class="row m-0 p-0">
+                                                    <div class="col-4">
+                                                        <span class="label ItemHeader">Houses</span>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <span class="label ItemHeader">Churches</span>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <span class="label ItemHeader">Commercial</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row m-0 p-0">
+                                                    <div class="col-4">  
+                                                        <input type="checkbox" class="switch" id="swHouse" value="house" onclick="processSwitches()" checked></input>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <input type="checkbox" class="switch" id="swChurch" value="church" onclick="processSwitches()" checked></input>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <input type="checkbox" class="switch" id="swCommercial" value="commercial" onclick="processSwitches()" checked></input>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row m-0 p-0" id="EraRow">
+
+                                                <div class="col-12">
+                                                    <span class="label Subheader">Era</span>
+                                                </div>
+
+                                                <div class="row m-0 p-0">
+                                                    <div class="col-6">
+                                                        <span class="label ItemHeader">1800s</span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <span class="label ItemHeader">1900s</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row m-0 p-0">
+                                                    <div class="col-6">
+                                                        <input type="checkbox" id="sw1800s" class="switch" value="1800s" onclick="processSwitches()" checked></input>
+                                                        
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="checkbox" id="sw1900s" class="switch" value="1900s" onclick="processSwitches()" checked></input>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    
+                                        <!-- Buttons -->
+                                        <div class="row mt-2 ms-0 me-0 mb-0 p-0">
+                                            <div class="col-12">
+                                            
+
+                                                <div class="btn-group controls">
+                                                    <button id="Close" type="button" class="btn btn-info" onclick="closeForm()">Close</button>   
+                                                    <button id="Clear" type="button" class="btn btn-info" onclick="clearTourRoute()">Clear Tour</button>                                                                   
+
+                                                    <button id="Generate Tour" type="button" class="btn btn-info">    
+                                                        Generate Tour
+                                                    </button>  
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form> 
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="bg_image" class="btn-group" style="z-index: 1001" role="group" aria-label="...">                
+                    <button type="button" id = "btnImage_0" value = "0" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="henri_castro_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_1" value = "1" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="first_stone_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_2" value = "2" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="jungman_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_3" value = "3" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="st_louis_church_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_4" value = "4" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="pingenot_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_5" value = "5" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="tarde_hotel_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_6" value = "6" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="blacksmith_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_7" value = "7" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="charles_naegelin_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_8" value = "8" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="burger_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_9" value = "9" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="louis_huth_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_10" value = "10" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="tondre_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_11" value = "11" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="landmark_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_12" value = "12" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="zimmerman_bohl_keller_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_13" value = "13" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="vonflie_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_14" value = "14" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="naegelin_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_15" value = "15" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="gerhard_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_16" value = "16" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="patterson_renken_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_17" value = "17" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="antoine_xavier_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_18" value = "18" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="f_xavier_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_19" value = "19" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="alois_walter_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_20" value = "20" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="mangold_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_21" value = "21" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="hans_meat_market_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_22" value = "22" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="courthouse_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_23" value = "23" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="burell_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_24" value = "24" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="arcadius_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_25" value = "25" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="schneider_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_26" value = "26" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="jean_merian_num.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_27" value = "27" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="coming_soon_27.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_28" value = "28" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="coming_soon_28.jpg" class="image"/>
+                    </button>
+                    <button type="button" id = "btnImage_29" value = "29" onclick = btnHighlight(this) class="btn btn-default btn-image">
+                        <img src="coming_soon_29.jpg" class="image"/>
+                    </button>                   
+                </div>    
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
