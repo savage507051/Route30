@@ -52,9 +52,9 @@ Record of Changes:
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src = "route30.js"></script>
+    <script src = "./library/route30.js"></script>
 
-    <script src="poi.js"></script>
+    <script src="./data/poi.js"></script>
 
     <script type="text/javascript">
 
@@ -71,7 +71,7 @@ Record of Changes:
         var poiValue = {};
 
         var iconUser = L.icon({
-            iconUrl: "user.png",
+            iconUrl: "./icons/user.png",
             iconSize: [20, 45],
             iconAnchor: [10, 45],
 
@@ -127,7 +127,7 @@ Record of Changes:
 
         };
 		
-        R30LoadData("poi.geojson", "nodes.geojson", "edges.geojson");
+        R30LoadData("./data/poi.geojson", "./data/nodes.geojson", "./data/edges.geojson");
 		
 		var tour_layer = null;
 
@@ -1023,94 +1023,94 @@ Record of Changes:
             <div class="col-12">
                 <div id="bg_image" class="btn-group" style="z-index: 1001" role="group" aria-label="...">                
                     <button type="button" id = "btnImage_0" value = "0" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="henri_castro_num.jpg" class="image"/>
+                        <img src="./images/henri_castro_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_1" value = "1" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="first_stone_num.jpg" class="image"/>
+                        <img src="./images/first_stone_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_2" value = "2" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="jungman_num.jpg" class="image"/>
+                        <img src="./images/jungman_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_3" value = "3" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="st_louis_church_num.jpg" class="image"/>
+                        <img src="./images/st_louis_church_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_4" value = "4" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="pingenot_num.jpg" class="image"/>
+                        <img src="./images/pingenot_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_5" value = "5" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="tarde_hotel_num.jpg" class="image"/>
+                        <img src="./images/tarde_hotel_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_6" value = "6" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="blacksmith_num.jpg" class="image"/>
+                        <img src="./images/blacksmith_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_7" value = "7" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="charles_naegelin_num.jpg" class="image"/>
+                        <img src="./images/charles_naegelin_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_8" value = "8" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="burger_num.jpg" class="image"/>
+                        <img src="./images/burger_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_9" value = "9" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="louis_huth_num.jpg" class="image"/>
+                        <img src="./images/louis_huth_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_10" value = "10" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="tondre_num.jpg" class="image"/>
+                        <img src="./images/tondre_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_11" value = "11" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="landmark_num.jpg" class="image"/>
+                        <img src="./images/landmark_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_12" value = "12" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="zimmerman_bohl_keller_num.jpg" class="image"/>
+                        <img src="./images/zimmerman_bohl_keller_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_13" value = "13" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="vonflie_num.jpg" class="image"/>
+                        <img src="./images/vonflie_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_14" value = "14" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="naegelin_num.jpg" class="image"/>
+                        <img src="./images/naegelin_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_15" value = "15" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="gerhard_num.jpg" class="image"/>
+                        <img src="./images/gerhard_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_16" value = "16" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="patterson_renken_num.jpg" class="image"/>
+                        <img src="./images/patterson_renken_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_17" value = "17" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="antoine_xavier_num.jpg" class="image"/>
+                        <img src="./images/antoine_xavier_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_18" value = "18" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="f_xavier_num.jpg" class="image"/>
+                        <img src="./images/f_xavier_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_19" value = "19" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="alois_walter_num.jpg" class="image"/>
+                        <img src="./images/alois_walter_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_20" value = "20" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="mangold_num.jpg" class="image"/>
+                        <img src="./images/mangold_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_21" value = "21" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="hans_meat_market_num.jpg" class="image"/>
+                        <img src="./images/hans_meat_market_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_22" value = "22" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="courthouse_num.jpg" class="image"/>
+                        <img src="./images/courthouse_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_23" value = "23" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="burell_num.jpg" class="image"/>
+                        <img src="./images/burell_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_24" value = "24" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="arcadius_num.jpg" class="image"/>
+                        <img src="./images/arcadius_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_25" value = "25" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="schneider_num.jpg" class="image"/>
+                        <img src="./images/schneider_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_26" value = "26" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="jean_merian_num.jpg" class="image"/>
+                        <img src="./images/jean_merian_num.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_27" value = "27" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="coming_soon_27.jpg" class="image"/>
+                        <img src="./images/coming_soon_27.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_28" value = "28" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="coming_soon_28.jpg" class="image"/>
+                        <img src="./images/coming_soon_28.jpg" class="image"/>
                     </button>
                     <button type="button" id = "btnImage_29" value = "29" onclick = btnHighlight(this) class="btn btn-default btn-image">
-                        <img src="coming_soon_29.jpg" class="image"/>
+                        <img src="./images/coming_soon_29.jpg" class="image"/>
                     </button>                   
                 </div>    
             </div>
