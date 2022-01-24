@@ -1,6 +1,6 @@
 # Route30
-Author: George Adams  
-Creation Date: October 6, 2021
+Author: George Adams, Southwest Research Institute (SwRI)
+Creation Date: January 12, 2021
 
 Route30 is a client-side JavaScript routing library.
 
