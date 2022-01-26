@@ -28,6 +28,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!--
 Record of Changes:
     January 12, 2022: Baseline
+    January 26, 2022: Fixed an error. If the user's current position is being tracked and
+                      the user decides to set the starting position, tracking is turned off.
 -->
 
 <!DOCTYPE html>
@@ -685,6 +687,13 @@ Record of Changes:
         function getLocation(event) {
             L.DomEvent.stopPropagation(event);
 
+            if(bTracking) {
+                map.stopLocate();
+                bTracking = false;
+                track.innerHTML = "Start Tracking";
+                track.style.backgroundColor = "#7898B0";
+            }            
+
             set_starting_position = document.getElementById("btnSetStartingPosition");
             set_starting_position.style.backgroundColor = "red";
             bSelectStartingLocation = true;
@@ -717,6 +726,13 @@ Record of Changes:
 
         function setCurrentLocation(event) {
             L.DomEvent.stopPropagation(event);
+
+            if(bTracking) {
+                map.stopLocate();
+                bTracking = false;
+                track.innerHTML = "Start Tracking";
+                track.style.backgroundColor = "#7898B0";
+            }            
 
             map.locate();
 
