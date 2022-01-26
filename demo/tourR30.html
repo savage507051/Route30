@@ -688,6 +688,7 @@ Record of Changes:
             L.DomEvent.stopPropagation(event);
 
             if(bTracking) {
+                let track = document.getElementById("Track");
                 map.stopLocate();
                 bTracking = false;
                 track.innerHTML = "Start Tracking";
@@ -728,6 +729,7 @@ Record of Changes:
             L.DomEvent.stopPropagation(event);
 
             if(bTracking) {
+                let track = document.getElementById("Track");
                 map.stopLocate();
                 bTracking = false;
                 track.innerHTML = "Start Tracking";
