@@ -1,5 +1,5 @@
 # Route30
-Author: George Adams, Southwest Research Institute (SwRI)
+Author: George Adams, Southwest Research Institute® (SwRI®)
 
 Date: January 26, 2021
 
