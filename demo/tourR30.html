@@ -30,6 +30,7 @@ Record of Changes:
     January 12, 2022: Baseline
     January 26, 2022: Fixed an error. If the user's current position is being tracked and
                       the user decides to set the starting position, tracking is turned off.
+    February 7, 2022: Removed the poi.js file. POIs are obtained from poi.geojson only.
 -->
 
 <!DOCTYPE html>
@@ -55,8 +56,6 @@ Record of Changes:
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src = "./library/route30.js"></script>
-
-    <script src="./data/poi.js"></script>
 
     <script type="text/javascript">
 
@@ -481,23 +480,33 @@ Record of Changes:
             
             buttons_div.insertBefore(zoom.getContainer(), buttons_div.firstChild)
 
-            var poiLayer = L.geoJSON(null, {
-				pointToLayer: function (feature, latlng) {
-                    
-                    label = String(feature.id);
-				    return new L.CircleMarker(latlng, poiStyle).bindTooltip(label, {
-                        permanent: true,
-                        direction: "center",
-                        className: "poi-labels"
-                    }).openTooltip();
-                    
-				},
-                onEachFeature: poisOnEach
-			});	
-            poiLayer.addData(pois);
-            poiLayer.addTo(map);
+            // Get the POIs from the GeoJSON file
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                const response = this.responseText;
+                var pois = JSON.parse(response);
 
-            
+                var poiLayer = L.geoJSON(null, {
+				    pointToLayer: function (feature, latlng) {
+                    
+                        label = String(feature.id);
+				        return new L.CircleMarker(latlng, poiStyle).bindTooltip(label, {
+                            permanent: true,
+                            direction: "center",
+                            className: "poi-labels"
+                        }).openTooltip();
+                    
+				    },
+                    onEachFeature: poisOnEach
+			    });	
+                poiLayer.addData(pois);
+                poiLayer.addTo(map);
+            }
+
+            // Send a request
+            xhttp.open("GET", "./data/poi.geojson");
+            xhttp.send();	
+
             map.on('locationerror', onLocationError);
 
             map.on('locationfound', onLocationFound);
@@ -552,7 +561,7 @@ Record of Changes:
             marker = L.marker([routeParameter.userStart[1],routeParameter.userStart[0]], {icon: iconUser}).addTo(map);
 
             let ta_license = document.getElementById("taLicense");
-            ta_license.value = 'Copyright © 2021 Southwest Research Institute (SwRI)\n\n' +
+            ta_license.value = 'Copyright © 2021 Southwest Research Institute® (SwRI®)\n\n' +
                 'Author: George Adams\n' +
                 'Principal Engineer, SwRI\n' +
                 '6220 Culebra Road\n' +
@@ -811,7 +820,7 @@ Record of Changes:
                         <div class="form-group">
                             <div class="row m-0 p-0">
                                 <div class="col-12">
-                                    <button id="btnCopyright" type="button" class="btn btn-info" onclick="openFormLicense()">© 2021 Southwest Research Institute (SwRI)</button>
+                                    <button id="btnCopyright" type="button" class="btn btn-info" onclick="openFormLicense()">© 2021 Southwest Research Institute&reg (SwRI&reg)</button>
                                 </div>
                             </div>
                             <div class="row m-0 p-0">
@@ -847,7 +856,7 @@ Record of Changes:
                             <div class="container m-0 p-0">
                                 <div class="row m-0 pt-0 ps-0 pe-0 pb-2 bg-secondary text-white">
                                     <div class="col-12">
-                                        <h2 id="frmTitleLicense">Southwest Research Institute (SwRI) License</h2>
+                                        <h2 id="frmTitleLicense">Southwest Research Institute&reg (SwRI&reg) License</h2>
                                         <div class="row m-0 p-2 bg-success text-white" id="rowLicense">
                                     
                                             <div class="col-12">
