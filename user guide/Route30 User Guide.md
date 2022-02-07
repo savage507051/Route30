@@ -7,7 +7,7 @@ Date: February 7, 2022
 
 ## Data Files
 There are three data files: 
-1. POI (Points of Interest) file, pois.geojson (along with a copy named pois.js for the demo web app): This file is created from scratch. It has the following geoJSON structure:
+1. POI (Points of Interest) file, poi.geojson: This file is created from scratch. It has the following GeoJSON structure:
 
     <img src="./images/pois.jpg" width="300" height="300"/>  
     
@@ -20,7 +20,7 @@ There are three data files:
     6. Year, Integer: The year the property was built
     7. Address, String: The address of the property
 
-    In this implementation, the pois.geojson file is used as input to the routing library. A copy of this file was created and saved as pois.js for the demo web app. The only required fields for pois in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a shorter pois.geojson file could have been used for the routing library.  
+    In this implementation, the poi.geojson file is used as input to the routing library. A copy of this file was created and saved as poi.js for the demo web app. The only required fields for POIs in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a shorter poi.geojson file could have been used for the routing library.  
 
 
 2. Street Network (Boeing, 2017)
