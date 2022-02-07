@@ -9,7 +9,7 @@ Date: February 7, 2022
 There are three data files: 
 1. POI (Points of Interest) file, poi.geojson: This file is created from scratch. It has the following geoJSON structure:
 
-![POI GeoJSON File](images/pois.jpg)
+![POI GeoJSON File](images/pois.jpg =200x200)
 
 
 2. Street Network (Boeing, 2017)
