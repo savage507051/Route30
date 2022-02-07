@@ -12,13 +12,13 @@ There are three data files:
     <img src="./images/pois.jpg" width="300" height="300"/>  
     
     Field definitions:
-        a. id, String \[required\]: unique identifier
-        b. name, String: POI name
-        c. priority, Integer: Priority was intended to be used when limiting the length of a path. It is not used in this implementation
-        d. popup, String: Text to be displayed in a popup
-        e. criteria, StringList \[required\]: Filter criteria specified as a list of strings
-        f. Year, Integer: The year the property was built
-        g. Address, String: The address of the property
+    1. id, String \[required\]: unique identifier
+    2. name, String: POI name
+    3. priority, Integer: Priority was intended to be used when limiting the length of a path. It is not used in this implementation
+    4. popup, String: Text to be displayed in a popup
+    5. criteria, StringList \[required\]: Filter criteria specified as a list of strings
+    6. Year, Integer: The year the property was built
+    7. Address, String: The address of the property
 
     In this implementation, the pois.geojson file is used as input to the routing library. A copy of this file was created and saved as pois.js for the demo web app. The only requirement for pois in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a shorter pois.geojson file could have been used in the routing library.  
 
