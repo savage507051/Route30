@@ -20,7 +20,7 @@ There are three data files:
     6. Year, Integer: The year the property was built
     7. Address, String: The address of the property
 
-    In this implementation, the poi.geojson file is used as input to the routing library. A copy of this file was created and saved as poi.js for the demo web app. The only required fields for POIs in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a shorter poi.geojson file could have been used for the routing library.  
+    In this implementation, the poi.geojson file is used as input to the routing library. The only required fields for POIs in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a different and shorter poi.geojson file could have been used for the routing library.  
 
 
 2. Street Network (Boeing, 2017)
