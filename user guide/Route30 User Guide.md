@@ -23,7 +23,17 @@ There are three data files:
     In this implementation, the poi.geojson file is used as input to the routing library. The only required fields for POIs in the routing library are the "id" field, the "criteria" field, and the geometry. The other fields are only used for the demo web app. Therefore, a different and shorter poi.geojson file could have been used for the routing library.  
 
 
-2. Street Network (Boeing, 2017)
+2. Nodes file, nodes.geojson: This file represents the intersections of a street network. This file was downloaded from Harvard Dataverse (Boeing, 2017) as a shapefile. It was edited using QGIS to add a barrier field and then saved in GeoJSON format. It has the following GeoJSON structure:
+
+    <img src="./images/pois.jpg" width="300" height="300"/>  
+
+    Field definitions:
+    1. id, String \[required\]: unique identifier
+    2. barrier, Boolean \[required\]: specifies if someone is prevented from passing through the intersection
+
+3. Edges file, edges.geojson: This file represents the segments of a street network. This file was downloaded from Harvard Dataverse (Boeing, 2017) as a shapefile. It was edited using QGIS to reduce the number of fields and to add a criteria field and a barrier field and then saved in GeoJSON format. It has the following GeoJSON structure:
+
+
 
 ## References
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
