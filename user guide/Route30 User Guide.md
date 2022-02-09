@@ -33,7 +33,7 @@ There are three data files:
 
 3. Edges file, edges.geojson: This file represents the segments of a street network. This file was downloaded from Harvard Dataverse (Boeing, 2017) as a shapefile. It was edited using QGIS to reduce the number of fields and to add a criteria field and a barrier field and then saved in GeoJSON format. It has the following GeoJSON structure:
 
-    <img src="./images/edges.jpg" width="300" height="300"/>  
+    <img src="./images/edges.jpg" width="400" height="300"/>  
 
     Field definitions:
     1. id, String \[required\]: unique identifier
