@@ -8,6 +8,7 @@ Date: February 7, 2022
 # Table of Contents
 - [Input Data Files](#input_data_files)
 - [Generated route](#generated_route)
+- [References](#references)
 
 ## Input Data Files
 <div id='input_data_files'></div>
@@ -62,4 +63,6 @@ The optimal route is a GeoJSON formatted output string containing a MultiLineStr
 In a future enhancement, individual paths will be included in this output as a feature collection within the properties.
 
 ## References
+<div id='references'></div>
+
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
