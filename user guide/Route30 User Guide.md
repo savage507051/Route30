@@ -10,9 +10,9 @@ Date: February 7, 2022
 - [Generated route](#generated_route)
 - [References](#references)
 
-## Input Data Files
 <div id='input_data_files'></div>
 
+## Input Data Files
 There are three data files: 
 1. POI (Points of Interest) file, poi.geojson: This file is created from scratch. It has the following GeoJSON structure:
 
@@ -51,9 +51,9 @@ There are three data files:
     6. criteria, StringList \[required\]: Filter criteria specified as a list of strings
     7. barrier, Boolean \[required\]: specifies if someone is prevented from traversing the segment
 
-## Generated Route
 <div id='generated_route'></div>
 
+## Generated Route
 The library returns the optimal route in GeoJSON format. It has the following GeoJSON Structure:  
   
 <img src="./images/optimal_route.jpg" width="450" height="250"/>  
@@ -62,7 +62,8 @@ The optimal route is a GeoJSON formatted output string containing a MultiLineStr
 
 In a future enhancement, individual paths will be included in this output as a feature collection within the properties.
 
+<div id='references'></div>  
+
 ## References
-<div id='references'></div>
 
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
