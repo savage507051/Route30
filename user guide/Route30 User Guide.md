@@ -7,7 +7,7 @@ Date: February 7, 2022
 
 # Table of Contents
 - [Input Data Files](#input_data_files)
-- [Generated route](#generated_route)
+- [Generated Route](#generated_route)
 - [References](#references)
 
 <div id='input_data_files'></div>
