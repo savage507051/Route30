@@ -47,7 +47,7 @@ There are three data files:
 ## Generated Route
 The library returns the optimal route in GeoJSON format. It has the following GeoJSON Structure:  
   
-   <img src="./images/optimal_route.jpg" width="450" height="250"/>  
+<img src="./images/optimal_route.jpg" width="450" height="250"/>  
 
 The optimal route is a GeoJSON formatted output string containing a MultiLineString feature with a distance property and path property. The distance property provides the optimal route's distance; the path property provides the sequence of POIs on the optimal route.  
 
