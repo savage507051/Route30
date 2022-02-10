@@ -11,6 +11,7 @@ Date: February 7, 2022
 
 ## Input Data Files
 <div id='input_data_files'></div>
+
 There are three data files: 
 1. POI (Points of Interest) file, poi.geojson: This file is created from scratch. It has the following GeoJSON structure:
 
@@ -51,6 +52,7 @@ There are three data files:
 
 ## Generated Route
 <div id='generated_route'></div>
+
 The library returns the optimal route in GeoJSON format. It has the following GeoJSON Structure:  
   
 <img src="./images/optimal_route.jpg" width="450" height="250"/>  
