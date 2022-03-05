@@ -33,6 +33,7 @@ Record of Changes:
 var r30_r;
 var r30_d;
 var astar;
+var simulated_annealing;
 
 async function R30LoadData(poi_file, nodes_file, edges_file) {
     r30_r = await import('./route30_Route.js');
