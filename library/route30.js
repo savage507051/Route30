@@ -72,9 +72,10 @@ function R30Generate(parameter) {
         let result_array = [];
         result_array.push("Temperature, Factor, Steps, Max Attempts, Max Successes, Distance, Time Distance, Time Routing");
 
+        //let loop_parameters = [2000, 1500, 1000, 750, 500, 250, 200, 150, 100, 50];
+        //let loop_parameters = [500, 450, 400, 350, 300, 250, 200, 150, 100, 50];
         let loop_parameters = [5, 10, 15, 20, 25, 30];
         for(let loop_index = 0; loop_index < loop_parameters.length; loop_index++) {
-            //parameter.algorithm[3] = loop_parameters[loop_index];
             //parameter.algorithm[3] = loop_parameters[loop_index];
             parameter.algorithm[3] = 500;
             //parameter.algorithm[4] = loop_parameters[loop_index];
