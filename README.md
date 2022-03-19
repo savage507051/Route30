@@ -9,6 +9,10 @@ This library is developed as a capstone project in the MGIS program at Penn Stat
 
 The purpose of this library is to allow web app developers to incorporate routing in their applications. The routing library is intended to be a simple, cost-effective solution that may be particularly useful to local governments and non-profits.
 
+A demo web app was developed to show how the library could be used. The demo web app can be accessed using the following QR code:
+
+![Route30_QR](https://user-images.githubusercontent.com/76443534/159126640-fa3a9d6d-d21d-4d87-8db6-efef5c8d6f44.png)
+
 ### Deploy
 To deploy the web app and Route30 library, copy all of the folders to a web server with the exception of the demo folder. Place the files from the demo folder in the root directory.
 
