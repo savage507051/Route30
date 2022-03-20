@@ -17,7 +17,7 @@ A demo web app was developed to show how the library could be used. The demo web
 ### User Interface
 
 
-<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="700" height="700"/><br>
+<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="700" height="600"/><br>
 
 
 
@@ -30,7 +30,7 @@ A demo web app was developed to show how the library could be used. The demo web
 
 ### Set Starting Position
 
-<img src="https://user-images.githubusercontent.com/76443534/159188751-c14f9a3f-6d61-461b-9d85-c504046cfcb9.jpg" width="250" height="75"/><br>
+<img src="https://user-images.githubusercontent.com/76443534/159188751-c14f9a3f-6d61-461b-9d85-c504046cfcb9.jpg" width="250" height="150"/><br>
 
 
 
