@@ -15,29 +15,24 @@ A demo web app was developed to show how the library could be used. The demo web
 ![Route30_QR](https://user-images.githubusercontent.com/76443534/159126640-fa3a9d6d-d21d-4d87-8db6-efef5c8d6f44.png)
 
 ### User Interface
+The following image is the user interface for the historical walking tour web app in Castroville, Texas. There are 30 POIs. Highway 90 is the wide roadway that crosses through the historic district from east to west. A tour has been generated (shown in orange). The tour is displayed in the list on the right side of the figure. On the left side of the screen are the control buttons. The functionality invoked from these buttons is described next.
 
-
-<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="700" height="550"/><br>
-
-
-
+<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="600" height="432"/><br>
 
 ### Build a Tour Screen
+The tour button opens the Build a Tour screen shown below. From this screen, the tourist can filter POIs and constrain the route. POIs are filtered by type of structure and era. The route is constrained to more accessible segments or limited in length. After applying any desired filters and constraints, the tourist can generate a route by pressing the “Generate Tour” button at the bottom of the Build a Tour screen. A tourist could also clear the filters and constraints as well as any current tours by pressing the “Clear Tour” button.
 
-<img src="https://user-images.githubusercontent.com/76443534/159188735-fd7157c7-2fdf-48d3-ac77-315933c9284c.jpg" width="500" height="450"/><br>
-
-
+<img src="https://user-images.githubusercontent.com/76443534/159188735-fd7157c7-2fdf-48d3-ac77-315933c9284c.jpg" width="500" height="421"/><br>
 
 ### Set Starting Position
+The following image shows the Set Starting Position screen. The user can set their starting position manually by clicking the button on the right, or the app can find the user’s current position on the street network and use that (left button).
 
-<img src="https://user-images.githubusercontent.com/76443534/159188751-c14f9a3f-6d61-461b-9d85-c504046cfcb9.jpg" width="250" height="150"/><br>
-
-
+<img src="https://user-images.githubusercontent.com/76443534/159188751-c14f9a3f-6d61-461b-9d85-c504046cfcb9.jpg" width="300" height="148"/><br>
 
 ### Track Position
+Finally, the following image shows the control buttons from the user interface. The user can track their position by pressing the last button on this figure (i.e., the Start/Stop Tracking button). This way the location icon (the man on the map) moves as the tourist walks the route.
 
-<img src="https://user-images.githubusercontent.com/76443534/159188759-098a40ed-1dfd-4f01-9f4a-76aceb7e38f7.jpg" width="250" height="250"/><br>
-
+<img src="https://user-images.githubusercontent.com/76443534/159188759-098a40ed-1dfd-4f01-9f4a-76aceb7e38f7.jpg" width="300" height="280"/><br>
 
 ## Deploy
 To deploy the web app and Route30 library, copy all of the folders to a web server with the exception of the demo folder. Place the files from the demo folder in the root directory.
