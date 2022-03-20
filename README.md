@@ -17,14 +17,14 @@ A demo web app was developed to show how the library could be used. The demo web
 ### User Interface
 
 
-<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="700" height="600"/><br>
+<img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="700" height="550"/><br>
 
 
 
 
 ### Build a Tour Screen
 
-<img src="https://user-images.githubusercontent.com/76443534/159188735-fd7157c7-2fdf-48d3-ac77-315933c9284c.jpg" width="500" height="500"/><br>
+<img src="https://user-images.githubusercontent.com/76443534/159188735-fd7157c7-2fdf-48d3-ac77-315933c9284c.jpg" width="500" height="450"/><br>
 
 
 
