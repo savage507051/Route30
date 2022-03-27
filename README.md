@@ -1,7 +1,7 @@
 # Route30
 Author: George Adams, Southwest Research Institute® (SwRI®)
 
-Date: January 26, 2021
+Date: March 27, 2022
 
 Route30 is a client-side JavaScript routing library.
 
@@ -46,7 +46,7 @@ There are two primary algorithms for finding the shortest path between POIs. One
 The simulated annealing algorithm generates a close-to-optimal route from a distance matrix and set of POIs. The simulated annealing algorithm has its analogy in the field of metallurgy where metals are heated and then slow-cooled to relieve stresses. Similarly, this algorithm starts at a high pseudo temperature. An initial route is identified at random, then a series of transport or reversal processes are applied to that route while lowering the temperature. After each process is applied, the transformed route is evaluated to see if it has a shorter total distance. If so, that new route is kept. If not, the new route may or may not be kept depending on the temperature. As the temperature drops, fewer longer routes are accepted. The goal of this algorithm is to find a global minimum without getting stuck in a local minimum. Lojkine (2018), Jacobson (2013), Press et al. (1992), Schneider (2014), and Walker (2018) describe the simulated annealing approach in detail.
 
 ## Deploy
-To deploy the web app and Route30 library, copy all of the folders to a web server with the exception of the demo folder. Place the files from the demo folder in the root directory.
+To deploy the web app and Route30 library, copy the data, icons, images, and library folders to a web server. Copy the files from the demo folder to the root directory.
 
 ## Additional Information
 To see more information on how to build your own web app and use the library, see the user guide under the wiki tab.
