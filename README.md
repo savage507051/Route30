@@ -34,6 +34,17 @@ Finally, the following image shows the control buttons from the user interface. 
 
 <img src="https://user-images.githubusercontent.com/76443534/159188759-098a40ed-1dfd-4f01-9f4a-76aceb7e38f7.jpg" width="300" height="280"/><br>
 
+## Design
+The routing library is designed with two components: 1) a distance matrix component and 2) a route generation component. The goal of the distance matrix component is to find the shortest path between every pair of points of interest (POIs). It uses the A-Star algorithm to find the shortest path. The purpose of the route generation component is to generate a route that is close to optimal for a set of POIs. It uses the simulated annealing algorithm to find a best solution and generate the route.
+
+<img src="https://user-images.githubusercontent.com/76443534/160296850-edcb6dca-3a6a-49e9-a305-fd00f1337a65.jpg" width="300" height="131"/><br>
+
+### A-Star Algorithm
+There are two primary algorithms for finding the shortest path between POIs. One is Dijkstra’s algorithm and the other is the A-Star (or A*) algorithm. A-Star is a modification to Dijkstra’s algorithm. Whereas Dijkstra’s algorithm will search out equally from the source node, A-Star prioritizes its evaluation using a heuristic . It tries to identify the best next node for reaching the target. With its focused search, A-Star minimizes the number of calculations and can be faster than Dijkstra’s algorithm, and therefore it was selected for Route30. Dere, Esat, and Durdu (2018) describe their use of the A-Star algorithm for transportation systems. Swift (2017), Lester (2005), and Roy (2019) describe the A-Star algorithm with pseudocode or actual code. 
+
+### Simulated Annealing Algorithm
+The simulated annealing algorithm generates a close-to-optimal route from a distance matrix and set of POIs. The simulated annealing algorithm has its analogy in the field of metallurgy where metals are heated and then slow-cooled to relieve stresses. Similarly, this algorithm starts at a high pseudo temperature. An initial route is identified at random, then a series of transport or reversal processes are applied to that route while lowering the temperature. After each process is applied, the transformed route is evaluated to see if it has a shorter total distance. If so, that new route is kept. If not, the new route may or may not be kept depending on the temperature. As the temperature drops, fewer longer routes are accepted. The goal of this algorithm is to find a global minimum without getting stuck in a local minimum. Lojkine (2018), Jacobson (2013), Press et al. (1992), Schneider (2014), and Walker (2018) describe the simulated annealing approach in detail.
+
 ## Deploy
 To deploy the web app and Route30 library, copy all of the folders to a web server with the exception of the demo folder. Place the files from the demo folder in the root directory.
 
@@ -44,6 +55,8 @@ To see more information on how to build your own web app and use the library, se
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
 
 Castroville Area Chamber of Commerce (CACC). (2017). *Wilkomme…Your guide to Castroville.* Accessed September 16, 2021, from http://www.castroville.com/visitors-guide/. 
+
+Dere, Esat & Durdu, Akif. (2018). Usage of the A* Algorithm to Find the Shortest Path in Transportation Systems. Accessed September 4, 2021, from https://www.researchgate.net/publication/325415675_Usage_of_the_A_Algorithm_to_Find_the_Shortest_Path_in_Transportation_Systems.
 
 Jacobson, L. (2013). *Simulated annealing for beginners.* Accessed August 24, 2021, from https://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6.  
 
