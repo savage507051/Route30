@@ -35,7 +35,7 @@ Finally, the following image shows the control buttons from the user interface. 
 <img src="https://user-images.githubusercontent.com/76443534/159188759-098a40ed-1dfd-4f01-9f4a-76aceb7e38f7.jpg" width="300" height="280"/><br>
 
 ## Design
-The routing library is designed with two components: 1) a distance matrix component and 2) a route generation component. The goal of the distance matrix component is to find the shortest path between every pair of points of interest (POIs). It uses the A-Star algorithm to find the shortest path. The purpose of the route generation component is to generate a route that is close to optimal for a set of POIs. It uses the simulated annealing algorithm to find a best solution and generate the route. These algorithms are described next.
+The routing library is designed with two components: 1) a distance matrix component and 2) a route generation component. The goal of the distance matrix component is to find the shortest path between every pair of points of interest (POIs) and output this information in the form of a distance matrix. It uses the A-Star algorithm to find the shortest paths. The purpose of the route generation component is to generate a route that is close to optimal for a set of POIs. It takes a distance matrix as input and uses the simulated annealing algorithm to find a best solution and generate the route. These algorithms are described next.
 
 <img src="https://user-images.githubusercontent.com/76443534/160296850-edcb6dca-3a6a-49e9-a305-fd00f1337a65.jpg" width="300" height="131"/><br>
 
