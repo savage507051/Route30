@@ -53,7 +53,7 @@ To see more information on how to build your own web app and use the library, se
 
 Background on routing and more detailed information on Route30 is in the final report: https://github.com/savage507051/Route30/blob/main/Final_Report/FinalReport.pdf.
 
-
+Route30 was presented at the 2022 Texas GIS Forum on March 9, 2022 in Austin, Texas. The presentation and associated speaker notes can be downloaded from: https://github.com/savage507051/Route30/tree/main/Presentation.
 
 ## References
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
