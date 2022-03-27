@@ -51,6 +51,10 @@ To deploy the web app and Route30 library, copy all of the folders to a web serv
 ## Additional Information
 To see more information on how to build your own web app and use the library, see the user guide under the wiki tab.
 
+Background on routing and more detailed information on Route30 is in the final report: https://github.com/savage507051/Route30/blob/main/Final_Report/FinalReport.pdf.
+
+
+
 ## References
 Boeing, G. (2017). *U.S. Street Network Shapefiles, Node/Edge Lists, and GraphML Files.* https://doi.org/10.7910/DVN/CUWWYJ, Harvard Dataverse, V2.  
 
