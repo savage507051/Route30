@@ -32,7 +32,7 @@ The following image shows the Set Starting Position screen. The user can set the
 ### Track Position
 Finally, the following image shows the control buttons from the user interface. The user can track their position by pressing the last button on this figure (i.e., the Start/Stop Tracking button). This way the location icon (the man on the map) moves as the tourist walks the route.
 
-Note that the button is a toggle button. When the user initially presses the button, the background will turn red and the text will change to "Stop Tracking." If pressed again, the background returns to the initial blue-grey color and the text changes to "Start Tracking."
+Note that the Start/Stop Tracking button is a toggle button. When the user initially presses the button, the background will turn red and the text will change to "Stop Tracking." If pressed again, the background returns to the initial blue-grey color and the text changes to "Start Tracking."
 
 <img src="https://user-images.githubusercontent.com/76443534/159188759-098a40ed-1dfd-4f01-9f4a-76aceb7e38f7.jpg" width="300" height="280"/><br>
 
