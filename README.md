@@ -15,7 +15,7 @@ A demo web app was developed to show how the library could be used. The demo web
 ![Route30_QR](https://user-images.githubusercontent.com/76443534/159126640-fa3a9d6d-d21d-4d87-8db6-efef5c8d6f44.png)
 
 ### User Interface
-The following image is the user interface for the historical walking tour web app in Castroville, Texas. There are 30 POIs. Highway 90 is the wide roadway that crosses through the historic district from east to west. A tour has been generated (shown in orange). The tour is displayed in the list on the right side of the figure. On the left side of the screen are the control buttons. The functionality invoked from these buttons is described next.
+The following image is the user interface for the historical walking tour web app in Castroville, Texas. There are 30 points of interest (POIs). Highway 90 is the wide roadway that crosses through the historic district from east to west. A tour has been generated (shown in orange). The tour is displayed in the list on the right side of the figure. On the left side of the screen are the control buttons. The functionality invoked from these buttons is described next.
 
 <img src="https://user-images.githubusercontent.com/76443534/159188710-ae16d033-0bfe-4c2a-a8ed-ea79d989db00.jpg" width="600" height="432"/><br>
 
