@@ -51,7 +51,7 @@ The simulated annealing algorithm generates a close-to-optimal route from a dist
 To deploy the web app and Route30 library, copy the data, icons, images, and library folders to a web server. Copy the files from the demo folder to the root directory.
 
 ## Additional Information
-To see more information on how to build your own web app and use the library, see the user guide under the wiki tab.
+For more information on how to build your own web app and use the library, see the user guide under the wiki tab.
 
 Background on routing and more detailed information on Route30 is in the final report: https://github.com/savage507051/Route30/blob/main/Final_Report/FinalReport.pdf.
 
